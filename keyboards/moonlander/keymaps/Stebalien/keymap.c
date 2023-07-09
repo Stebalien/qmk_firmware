@@ -40,33 +40,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    /*
-    #ifdef RGB_MATRIX_ENABLE
-    if (rgb_matrix_is_enabled()) {
-        rgblight_mode(1);
-        rgblight_sethsv(190,255,255);
-    }
-    #endif
-    */
     return state;
 }
 
 void keyboard_post_init_user(void) {
+    #ifdef RGB_MATRIX_ENABLE
     if (!rgb_matrix_is_enabled()) {
         return;
     }
-    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_sethsv(144,168,240);
+    rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
+    #endif
 }
 
 void rgb_matrix_indicators_user(void) {
+    #ifdef RGB_MATRIX_ENABLE
     if (!rgb_matrix_is_enabled()) {
         return;
     }
-    #ifdef RGB_MATRIX_ENABLE
     switch (get_highest_layer(layer_state)) {
-    case BASE:
-        break;
     case SYMB:
         rgb_matrix_set_color(57, 0xff, 0x00, 0xff);
         rgb_matrix_set_color(58, 0xff, 0x00, 0xff);
@@ -95,7 +86,9 @@ void rgb_matrix_indicators_user(void) {
         rgb_matrix_set_color(51, 0xff, 0x00, 0xff);
         rgb_matrix_set_color(56, 0xff, 0x00, 0xff);
         rgb_matrix_set_color(61, 0xff, 0x00, 0xff);
+        break;
     default:
+        rgb_matrix_set_color_all(0x57, 0xbe, 0xff);
         break;
     }
     #endif
